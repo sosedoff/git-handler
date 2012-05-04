@@ -47,6 +47,10 @@ module GitHandler
         :command   => [command[:action], "'#{repo_path}'"].join(' ')
       )
 
+      unless File.exist?(request.repo_path)
+        raise SessionError, "Repository #{request.repo} does not exist!"
+      end
+
       if block_given?
         yield request
       else
