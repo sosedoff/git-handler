@@ -38,7 +38,7 @@ module GitHandler
       raise SessionError, "Git requests only"   unless valid_request?
 
       command = parse_command(env['SSH_ORIGINAL_COMMAND'])
-      repo_path = File.join(config.repositories_path, command[:repo])
+      repo_path = File.join(config.repos_path, command[:repo])
       options = [command[:action], repo_path].join(' ')
 
       exec("git-shell", "-c", options)
