@@ -37,11 +37,21 @@ module GitHandler
       raise SessionError, "Invalid environment" unless valid_environment?
       raise SessionError, "Git requests only"   unless valid_request?
 
-      command = parse_command(env['SSH_ORIGINAL_COMMAND'])
+      command   = parse_command(env['SSH_ORIGINAL_COMMAND'])
       repo_path = File.join(config.repos_path, command[:repo])
-      options = [command[:action], repo_path].join(' ')
+      request   = GitHandler::Request.new(
+        :args      => args,
+        :env       => env,
+        :repo      => command[:repo],
+        :repo_path => repo_path,
+        :command   => [command[:action], "'#{repo_path}'"].join(' ')
+      )
 
-      exec("git-shell", "-c", options)
+      if block_given?
+        yield request
+      else
+        exec("git-shell", "-c", request.command)
+      end
 
       # Interesting part, inspired by github write-up
       # if we need to pass this to another server
