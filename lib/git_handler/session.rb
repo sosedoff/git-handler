@@ -52,6 +52,9 @@ module GitHandler
       end
 
       if block_given?
+        # Pass all request information for custom processing
+        # if no block is defined it will execute git-shell
+        # with parameters provided
         yield request
       else
         exec("git-shell", "-c", request.command)

@@ -3,7 +3,8 @@ require 'spec_helper'
 describe GitHandler::Session do
   context '.new' do
     it 'requires configuration' do
-      proc { GitHandler::Session.new }.should raise_error GitHandler::SessionError
+      proc { GitHandler::Session.new }.
+        should raise_error GitHandler::SessionError, 'Configuration required!'
     end
 
     it 'raises error if home path does not exist' do
