@@ -1,6 +1,11 @@
 require 'spec_helper'
+require 'fileutils'
 
 describe GitHandler::Session do
+  before do
+    FileUtils.mkdir_p('/tmp/valid-repo.git')
+  end
+
   context '.new' do
     it 'requires configuration' do
       proc { GitHandler::Session.new }.
