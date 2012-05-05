@@ -35,7 +35,7 @@ module GitHandler
       @env  = env
 
       raise SessionError, "Invalid environment" unless valid_environment?
-      raise SessionError, "Git requests only"   unless valid_request?
+      raise SessionError, "Invalid git request" unless valid_request?
 
       command   = parse_command(env['SSH_ORIGINAL_COMMAND'])
       repo_path = File.join(config.repos_path, command[:repo])

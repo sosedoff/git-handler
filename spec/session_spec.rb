@@ -20,11 +20,49 @@ describe GitHandler::Session do
     end
   end
 
-  it 'raises error if user is invalid' do
-    # TODO
-  end
+  context 'for environment' do
+    before :each do
+      @config = GitHandler::Configuration.new(
+        :home_path  => '/tmp',
+        :repos_path => '/tmp'
+      )
+      @session = GitHandler::Session.new(@config)
+    end
 
-  it 'raises error if environment is invalid' do
-    # TODO
+    subject do
+      GitHandler::Session.new(@config)
+    end
+
+    it 'validates environment' do
+      proc { subject.execute([], {}) }.
+        should raise_error GitHandler::SessionError, 'Invalid environment'
+
+      proc { subject.execute([], {'USER' => 'git', 'HOME' => '/invalid/path'}) }.
+        should raise_error GitHandler::SessionError, 'Invalid environment'
+
+      proc { subject.execute([], {'USER' => 'git', 'HOME' => '/tmp'}) }.
+        should_not raise_error GitHandler::SessionError, 'Invalid environment'
+    end
+
+    it 'validates git request' do
+      env = {'USER' => 'git', 'HOME' => '/tmp'}
+
+      proc { subject.execute([], env) }.
+        should raise_error GitHandler::SessionError, 'Invalid git request'
+
+      env.merge!(
+        'SSH_CLIENT'           => '127.0.0.1',
+        'SSH_CONNECTION'       => '127.0.0.1 64039 127.0.0.2 22',
+        'SSH_ORIGINAL_COMMAND' => 'foobar'
+      )
+
+      proc { subject.execute([], env) }.
+        should raise_error GitHandler::SessionError, 'Invalid git request'
+
+      env['SSH_ORIGINAL_COMMAND'] = "git-upload-pack 'foobar.git'"
+
+      proc { subject.execute([], env) }.
+        should_not raise_error GitHandler::SessionError, 'Invalid git request'
+    end
   end
 end
