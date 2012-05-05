@@ -27,10 +27,11 @@ module GitHandler
     
     # Execute session
     #
-    # args - Command arguments
-    # env - Environment parameters
+    # args    - Command arguments
+    # env     - Environment parameters
+    # run_git - Execute git shell if no block provided#
     #
-    def execute(args, env)
+    def execute(args, env, run_git=true)
       @args = args
       @env  = env
 
@@ -57,7 +58,9 @@ module GitHandler
         # with parameters provided
         yield request
       else
-        exec("git-shell", "-c", request.command)
+        if run_git == true
+          exec("git-shell", "-c", request.command)
+        end
       end
 
       # Interesting part, inspired by github write-up

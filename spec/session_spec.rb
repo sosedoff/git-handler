@@ -60,21 +60,37 @@ describe GitHandler::Session do
       env.merge!(
         'SSH_CLIENT'           => '127.0.0.1',
         'SSH_CONNECTION'       => '127.0.0.1 64039 127.0.0.2 22',
-        'SSH_ORIGINAL_COMMAND' => 'foobar'
+        'SSH_ORIGINAL_COMMAND' => 'invalid command'
       )
 
-      proc { subject.execute([], env) }.
+      proc { subject.execute([], env, false) }.
         should raise_error GitHandler::SessionError, 'Invalid git request'
 
       env['SSH_ORIGINAL_COMMAND'] = "git-upload-pack 'foobar.git'"
 
-      proc { subject.execute([], env) }.
+      proc { subject.execute([], env, false) }.
         should_not raise_error GitHandler::SessionError, 'Invalid git request'
     end
 
     it 'validates repository existense' do
-      proc { subject.execute([], @env) }.
-        should raise_error GitHandler::SessionError, 'Repository valid-repo.git does not exist!'
+      @env['SSH_ORIGINAL_COMMAND'] = "git-upload-pack 'invalid-repo.git'"
+      proc { subject.execute([], @env, false) }.
+        should raise_error GitHandler::SessionError, 'Repository invalid-repo.git does not exist!'
+
+      @env['SSH_ORIGINAL_COMMAND'] = "git-upload-pack 'valid-repo.git'"
+      proc { subject.execute([], @env, false) }.
+        should_not raise_error GitHandler::SessionError, 'Repository valid-repo.git does not exist!'
+    end
+
+    it 'yields request payload if block provided' do
+      payload = nil
+      subject.execute([], @env, false) { |req| payload = req }
+      payload.should_not be_nil
+      payload.should be_a GitHandler::Request
+      payload.env.should eq(@env)
+      payload.repo.should eq('valid-repo.git')
+      payload.repo_path.should eq('/tmp/valid-repo.git')
+      payload.command.should eq("git-upload-pack '/tmp/valid-repo.git'")
     end
   end
 end
