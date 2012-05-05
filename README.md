@@ -32,7 +32,7 @@ built for that:
 require 'git_handler/public_key'
 
 # Load your current pub key
-content = File.read(File.expand_path('/.ssh/id_rsa.pub'))
+content = File.read(File.expand_path('~/.ssh/id_rsa.pub'))
 
 # Create a key
 key = GitHandler::PublicKey.new(content)
