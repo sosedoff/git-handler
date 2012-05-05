@@ -38,18 +38,17 @@ content = File.read(File.expand_path('~/.ssh/id_rsa.pub'))
 key = GitHandler::PublicKey.new(content)
 ```
 
-Now, to convert loaded key into a system key just execute this:
+Now, to convert loaded key into a system key just run:
 
 ```ruby
 key.to_system_key('/usr/bin/git_proxy')
-
 # => command="/usr/bin/git_proxy",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNjN3ZUOoosWeuJ7KczE5FAOzwZ+Z51KSQvqTCb7ccBi4u+pPYcGEYr2t0cx/BUcx/ZGE8ih+zxN1qM8KmM0uluuy54itHsKFdAwoibkbG22fQc2DY0RmktXXB/w6LxmFuQrmz0fkcbkE39pm5k6Nw6mqks5HjM7aDXRdwM8fSrq0PjfUNiESIrIAeEMGhtZFaj+WZVMfXaIlgzxZsAUpUULhN4j069v8VgxWyyOUT+gwcQB8lVc0BVYhptlFaJBtwhfWvOAviSuK7Cpjh60NdkZ3R2QYeh6wb6fF+KGCkM4iED4PZ1Ep8fRzrbCHky4VHSOyOvg9qKcgP1h+e+diD 
 ```
 
 SSH public key is now ready for usage on server side. Drop it into ```~/home/git/.ssh/authorized_keys``` file
 if your user is ```git```. The whole purpose of key modifications is that we're 
 restricting SSH to a specific command or script on server, which gives us ability
-to manipulate with permissions and other restrictions.
+to control permissions and other restrictions.
 
 ### Control script
 
