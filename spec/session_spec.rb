@@ -20,13 +20,20 @@ describe GitHandler::Session do
     end
   end
 
-  context 'for environment' do
+  context '.execute' do
     before :each do
       @config = GitHandler::Configuration.new(
         :home_path  => '/tmp',
         :repos_path => '/tmp'
       )
       @session = GitHandler::Session.new(@config)
+      @env = {
+        'USER'                 => 'git',
+        'HOME'                 => '/tmp',
+        'SSH_CLIENT'           => '127.0.0.1',
+        'SSH_CONNECTION'       => '127.0.0.1 64039 127.0.0.2 22',
+        'SSH_ORIGINAL_COMMAND' => "git-upload-pack 'valid-repo.git'"
+      }
     end
 
     subject do
@@ -63,6 +70,11 @@ describe GitHandler::Session do
 
       proc { subject.execute([], env) }.
         should_not raise_error GitHandler::SessionError, 'Invalid git request'
+    end
+
+    it 'validates repository existense' do
+      proc { subject.execute([], @env) }.
+        should raise_error GitHandler::SessionError, 'Repository valid-repo.git does not exist!'
     end
   end
 end
