@@ -38,20 +38,21 @@ module GitHandler
       @args = args
       @env  = env
 
-      log_request
-
       raise SessionError, "Invalid environment" unless valid_environment?
       raise SessionError, "Invalid git request" unless valid_request?
 
       command   = parse_command(env['SSH_ORIGINAL_COMMAND'])
       repo_path = File.join(config.repos_path, command[:repo])
       request   = GitHandler::Request.new(
+        :remote_ip => env['SSH_CLIENT'].split(' ').first,
         :args      => args,
         :env       => env,
         :repo      => command[:repo],
         :repo_path => repo_path,
         :command   => [command[:action], "'#{repo_path}'"].join(' ')
       )
+
+      log_request(request)
 
       unless File.exist?(request.repo_path)
         raise SessionError, "Repository #{request.repo} does not exist!"
@@ -104,11 +105,8 @@ module GitHandler
 
     private
 
-    def log_request
-      message = "Request from #{env['SSH_CLIENT']}\n"
-      message << "\tArgs: #{args.join(' ')}\n"
-      message << "\tCommand: #{env['SSH_ORIGINAL_COMMAND']}\n\n"
-      log.info(message)
+    def log_request(req)
+      log.info("Request \"#{req.command}\" from #{req.remote_ip}. Args: #{req.args.join(' ')}")
     end
   end
 end
