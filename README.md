@@ -93,6 +93,7 @@ session.execute(ARGV, ENV) do |request|
   # contains all information about git request, env and repo
 
   STDERR.puts "-----------------------------"
+  STDERR.puts "REMOTE IP: #{request.remote_ip}"
   STDERR.puts "ARGS: #{request.args.inspect}"
   STDERR.puts "ENV: #{request.env.inspect}"
   STDERR.puts "REPO: #{request.repo}"
@@ -100,6 +101,15 @@ session.execute(ARGV, ENV) do |request|
   STDERR.puts "COMMAND: #{request.command}"
   STDERR.puts "-----------------------------"
 end
+```
+
+By default, if request has invalid environment attributes or not a git request,
+session raises ```GitHandler::SessionError```. If you dont want to handle exceptions,
+just use ```session.execute_safe``` method:
+
+```ruby
+session = GitHandler::Session.new(config)
+session.execute_safe(ARGV, ENV)
 ```
 
 To test if all that works try this:
