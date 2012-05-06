@@ -74,7 +74,22 @@ module GitHandler
       # the process should replace itself with another ssh call:
       # exec("ssh", "git@TARGET", "#{args.join(' ')}")
     end
-    
+
+    # Execute session in safe manner, catch all exceptions
+    # and terminate session
+    #
+    def execute_safe(args, env, run_git=true)
+      begin
+        execute(args, env, run_git)
+      rescue GitHandler::SessionError => err
+        # TODO: Some additional logging here
+        terminate(err.message)
+      rescue Exception => err
+        # TODO: Needs some love here
+        terminate(err.message)
+      end
+    end
+
     # Terminate session execution
     # 
     # reason - Process termination reason message
