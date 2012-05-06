@@ -6,6 +6,6 @@ describe GitHandler::Configuration do
     config.user.should eq('git')
     config.home_path.should eq('/home/git')
     config.repos_path.should eq('/home/git/repositories')
-    config.log_path.should eq('/var/log/git_handler.log')
+    config.log_path.should eq('/home/git/access.log')
   end
 end
