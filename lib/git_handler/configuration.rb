@@ -17,7 +17,7 @@ module GitHandler
       @user       = options[:user]       || 'git'
       @home_path  = options[:home_path]  || '/home/git'
       @repos_path = options[:repos_path] || File.join(@home_path, 'repositories')
-      @log_path   = options[:log_path]   || '/var/log/git_handler.log'
+      @log_path   = options[:log_path]   || File.join(@home_path, 'access.log')
     end
   end
 end

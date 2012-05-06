@@ -1,9 +1,11 @@
+require 'logger'
+
 module GitHandler
   class Session
     include GitHandler::GitCommand
-    include GitHandler::AccessLog
 
     attr_reader :args, :env, :config
+    attr_reader :log
 
     # Initialize a new Session
     # 
@@ -23,6 +25,7 @@ module GitHandler
       end
 
       @config = config
+      @log = Logger.new(@config.log_path)
     end
     
     # Execute session
@@ -34,6 +37,8 @@ module GitHandler
     def execute(args, env, run_git=true)
       @args = args
       @env  = env
+
+      log_request
 
       raise SessionError, "Invalid environment" unless valid_environment?
       raise SessionError, "Invalid git request" unless valid_request?
@@ -95,6 +100,15 @@ module GitHandler
         end
       end
       false
+    end
+
+    private
+
+    def log_request
+      message = "Request from #{env['SSH_CLIENT']}\n"
+      message << "\tArgs: #{args.join(' ')}\n"
+      message << "\tCommand: #{env['SSH_ORIGINAL_COMMAND']}\n\n"
+      log.info(message)
     end
   end
 end
