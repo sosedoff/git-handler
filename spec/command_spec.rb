@@ -29,7 +29,12 @@ describe GitHandler::GitCommand do
     it 'returns a proper action and repo' do
       result = @obj.parse_command("git-receive-pack 'repo.git'")
       result.should be_a Hash
-      result.should eql(:action => 'git-receive-pack', :repo => 'repo.git')
+      result.should eql(
+        :action => 'git-receive-pack', 
+        :repo   => 'repo.git',
+        :read   => false,
+        :write  => true
+      )
     end
   end
 
