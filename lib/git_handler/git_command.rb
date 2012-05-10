@@ -18,8 +18,17 @@ module GitHandler
       unless valid_command?(cmd)
         raise ParseError, "Invalid command: #{cmd}"
       end
-      match = cmd.scan(GIT_COMMAND).flatten
-      {:action => match.first, :repo => match.last}
+
+      match  = cmd.scan(GIT_COMMAND).flatten
+      action = match.first
+      repo   = match.last
+
+      {
+        :action => action,
+        :repo   => repo,
+        :read   => read_command?(action),
+        :write  => write_command?(action)
+      }
     end
     
     def valid_command?(cmd)
