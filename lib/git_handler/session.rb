@@ -49,7 +49,9 @@ module GitHandler
         :env       => env,
         :repo      => command[:repo],
         :repo_path => repo_path,
-        :command   => [command[:action], "'#{repo_path}'"].join(' ')
+        :command   => [command[:action], "'#{repo_path}'"].join(' '),
+        :read      => command[:read],
+        :write     => command[:write]
       )
 
       log_request(request)
