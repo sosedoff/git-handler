@@ -182,9 +182,37 @@ of your choice. You'll need to restart ssh daemon:
 /etc/init.d/ssh restart
 ```
 
+### Authorized Keys
+
+GitHandler provides a simple api to manage your ```authorized_keys``` file content. 
+
+Each write operation issues a lock ```File::LOCK_EX``` on file. 
+
+Example:
+
+```ruby
+require 'git_handler/public_key'
+require 'git_handler/authorized_keys'
+
+# Read your local ssh public key content
+content = File.read(File.expand_path('~/.ssh/id_rsa.pub'))
+
+# Create a new key
+key = GitHandler::PublicKey.new(content)
+
+# Write formatted key to authorized_keys file
+GitHandler::AuthorizedKeys.write_key('/path/to/file', key, 'my_command')
+```
+
+You can also write multiple keys:
+
+```ruby
+GitHandler::AuthorizedKeys.write('/path/to/file', [k1, k2, k3], 'my_command')
+```
+
 ## Testing
 
-To run the test suite just type:
+To run the test suite execute:
 
 ```
 rake test
