@@ -207,7 +207,7 @@ GitHandler::AuthorizedKeys.write_key('/path/to/file', key, 'my_command')
 You can also write multiple keys:
 
 ```ruby
-GitHandler::AuthorizedKeys.write('/path/to/file', [k1, k2, k3], 'my_command')
+GitHandler::AuthorizedKeys.write_keys('/path/to/file', [k1, k2, k3], 'my_command')
 ```
 
 ## Testing
