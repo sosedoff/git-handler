@@ -3,8 +3,8 @@ require File.expand_path('../lib/git_handler/version', __FILE__)
 Gem::Specification.new do |s|
   s.name        = "git_handler"
   s.version     = GitHandler::VERSION
-  s.summary     = "Some text"
-  s.description = "Some description"
+  s.summary     = "Server-side git request handler"
+  s.description = "Set of tool to simplify custom git server setup"
   s.homepage    = "http://github.com/sosedoff/git_handler"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
