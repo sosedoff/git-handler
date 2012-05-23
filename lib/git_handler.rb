@@ -1,3 +1,5 @@
+require 'git_handler/core_ext/array'
+require 'git_handler/core_ext/hash'
 require 'git_handler/version'
 require 'git_handler/errors'
 require 'git_handler/configuration'
