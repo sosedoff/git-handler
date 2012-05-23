@@ -6,14 +6,13 @@ module GitHandler
     # content - String buffer
     #
     def self.write(path, content)
-      raise ArgumentError, "File \"#{path}\" does not exist." if !File.exists?(path)
+      raise ArgumentError, "File \"#{path}\" does not exist."  if !File.exists?(path)
       raise ArgumentError, "File \"#{path}\" is not writable." if !File.writable?(path)  
-      end
 
       File.open(path, 'w') do |f|
         f.flock(File::LOCK_EX)
         f.write(content)
-        f.flock(FILE::LOCK_UN)
+        f.flock(File::LOCK_UN)
       end
     end
 
@@ -25,7 +24,7 @@ module GitHandler
     #
     def self.write_keys(path, keys, command)
       content = keys.map { |k| k.to_system_key(command) }.join("\n").strip
-      write_keys(path, content)
+      self.write(path, content)
     end
   end
 end
