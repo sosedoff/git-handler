@@ -1,6 +1,6 @@
 class Array
   def include_all?(values)
-    (self - values).empty?
+    (values - self).empty?
   end
 
   def include_any?(values)

@@ -1,9 +1,9 @@
 class Hash
-  def include_all?(keys)
+  def keys_all?(keys)
     self.keys.include_all?(keys)
   end
 
-  def include_any?(keys)
+  def keys_any?(keys)
     self.keys.include_any?(keys)
   end
 end
