@@ -7,6 +7,4 @@ require 'git_handler/request'
 require 'git_handler/git_command'
 require 'git_handler/session'
 
-module GitHandler
-  # TODO
-end
+module GitHandler ; end
