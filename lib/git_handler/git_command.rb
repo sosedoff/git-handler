@@ -1,6 +1,6 @@
 module GitHandler
   module GitCommand
-    GIT_COMMAND = /^(git-upload-pack|git upload-pack|git-upload-archive|git upload-archive|git-receive-pack|git receive-pack) '(.*)'$/
+    GIT_COMMAND = /\A(git-upload-pack|git upload-pack|git-upload-archive|git upload-archive|git-receive-pack|git receive-pack) '(.*)'\z/
 
     COMMANDS_READONLY = [
       'git-upload-pack',

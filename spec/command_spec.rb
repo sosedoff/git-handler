@@ -11,10 +11,12 @@ describe GitHandler::GitCommand do
 
   it 'detects a valid git command' do
     @obj.valid_command?("invalid command").should be_false
+    @obj.valid_command?("line1\nline2").should be_false
     @obj.valid_command?("git-receive-pack").should be_false
     @obj.valid_command?("git-receive-pack repo.git").should be_false
     @obj.valid_command?("git-receive-pack 'repo'").should be_true
     @obj.valid_command?("git-receive-pack 'repo.git'").should be_true
+    @obj.valid_command?("git-receive-pack 'repo'\ngit-upload-pack 'repo'").should be_false
   end
 
   context '.parse_command' do
