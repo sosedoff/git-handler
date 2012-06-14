@@ -8,9 +8,7 @@ module GitHandler
     attr_reader :log
 
     # Initialize a new Session
-    # 
-    # config - GitHandler::Configuration instance
-    #
+    # @param [Configuration] config an existing configuration instance
     def initialize(config=nil)
       unless config.kind_of?(GitHandler::Configuration)
         raise SessionError, 'Configuration required!'
@@ -28,12 +26,11 @@ module GitHandler
       @log = Logger.new(@config.log_path)
     end
     
-    # Execute session
-    #
-    # args    - Command arguments
-    # env     - Environment parameters
-    # run_git - Execute git shell if no block provided#
-    #
+    # Execute session 
+    # 
+    # @param [Array] args session arguments
+    # @param [Hash] env hash with environment variables, use ENV.to_hash.dup
+    # @param [Boolean] run_git execute git command if set to true
     def execute(args, env, run_git=true)
       @args = args
       @env  = env
@@ -77,9 +74,12 @@ module GitHandler
       # exec("ssh", "git@TARGET", "#{args.join(' ')}")
     end
 
-    # Execute session in safe manner, catch all exceptions
-    # and terminate session
-    #
+    # Execute session with catch-all-exceptions wrapper
+    # terminates session on SessionError or Exception
+    # 
+    # @param [Array] args session arguments
+    # @param [Hash] env hash with environment variables, use ENV.to_hash.dup
+    # @param [Boolean] run_git execute git command if set to true
     def execute_safe(args, env, run_git=true)
       begin
         execute(args, env, run_git)
@@ -94,9 +94,8 @@ module GitHandler
 
     # Terminate session execution
     # 
-    # reason - Process termination reason message
-    # exit_status - Exit code (default: 1)
-    #
+    # @param [String] reason
+    # @param [Fixnum] exit_status
     def terminate(reason='', exit_status=1)
       logger.error("Session terminated. Reason: #{reason}")
       $stderr.puts("Request failed: #{reason}")
@@ -104,13 +103,11 @@ module GitHandler
     end
     
     # Check if session environment is valid
-    #
     def valid_environment?
       env['USER'] == config.user && env['HOME'] == config.home_path
     end
     
     # Check if session request is valid
-    #
     def valid_request?
       if env.include_all?(['SSH_CLIENT', 'SSH_CONNECTION', 'SSH_ORIGINAL_COMMAND'])
         if valid_command?(env['SSH_ORIGINAL_COMMAND'])
