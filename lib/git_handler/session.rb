@@ -112,7 +112,7 @@ module GitHandler
     # Check if session request is valid
     #
     def valid_request?
-      if env.keys_all?(['SSH_CLIENT', 'SSH_CONNECTION', 'SSH_ORIGINAL_COMMAND'])
+      if env.include_all?(['SSH_CLIENT', 'SSH_CONNECTION', 'SSH_ORIGINAL_COMMAND'])
         if valid_command?(env['SSH_ORIGINAL_COMMAND'])
           return true
         end
