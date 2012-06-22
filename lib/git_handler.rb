@@ -7,4 +7,10 @@ require 'git_handler/request'
 require 'git_handler/git_command'
 require 'git_handler/session'
 
-module GitHandler ; end
+module GitHandler
+  # Shorthand for GitHandler::Session.new
+  # @return [Session] new session instance
+  def self.new(config)
+    GitHandler::Session.new(config)
+  end
+end
