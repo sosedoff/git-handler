@@ -12,16 +12,41 @@ describe GitHandler::Session do
         should raise_error GitHandler::SessionError, 'Configuration required!'
     end
 
-    it 'raises error if home path does not exist' do
-      config = GitHandler::Configuration.new(:home_path => '/var/foo')
-      proc { GitHandler::Session.new(config) }.
-        should raise_error GitHandler::ConfigurationError, "Home path does not exist!"
+    context 'with error checks' do
+      it 'raises error if home path does not exist' do
+        config = GitHandler::Configuration.new(:home_path => '/var/foo')
+        proc { GitHandler::Session.new(config) }.
+          should raise_error GitHandler::ConfigurationError, "Home path does not exist!"
+      end
+
+      it 'raises error if repos path does not exist' do
+        config = GitHandler::Configuration.new(:home_path => '/tmp', :repos_path => '/var/foo')
+        proc { GitHandler::Session.new(config) }.
+          should raise_error GitHandler::ConfigurationError, "Repositories path does not exist!"
+      end
     end
 
-    it 'raises error if repos path does not exist' do
-      config = GitHandler::Configuration.new(:home_path => '/tmp', :repos_path => '/var/foo')
-      proc { GitHandler::Session.new(config) }.
-        should raise_error GitHandler::ConfigurationError, "Repositories path does not exist!"
+    context 'without error checks' do
+      it 'should not raise error if home path does not exist' do
+        config = GitHandler::Configuration.new(
+          :home_path => '/var/foo', 
+          :raise_errors => false
+        )
+
+        proc { GitHandler::Session.new(config) }.
+          should_not raise_error GitHandler::ConfigurationError, "Home path does not exist!"
+      end
+
+      it 'should not raise error if repos path does not exist' do
+        config = GitHandler::Configuration.new(
+          :home_path => '/tmp', 
+          :repos_path => '/var/foo', 
+          :raise_errors => false
+        )
+
+        proc { GitHandler::Session.new(config) }.
+          should_not raise_error GitHandler::ConfigurationError, "Repositories path does not exist!"
+      end
     end
   end
 

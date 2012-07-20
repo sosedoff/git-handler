@@ -30,7 +30,11 @@ module GitHandler
       @home_path    = options[:home_path]    || '/home/git'
       @repos_path   = options[:repos_path]   || File.join(@home_path, 'repositories')
       @log_path     = options[:log_path]     || File.join(@home_path, 'access.log')
-      @raise_errors = options[:raise_errors] || true
+      @raise_errors = true
+
+      if options[:raise_errors] == false
+        @raise_errors = false
+      end
     end
   end
 end
