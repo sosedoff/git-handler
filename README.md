@@ -1,7 +1,6 @@
 # GitHandler [![Build Status](https://secure.travis-ci.org/sosedoff/git-handler.png?branch=master)](http://travis-ci.org/sosedoff/git-handler)
 
-A tool to simplify your git flow customizations. Its main purpose is to provide an
-application-based control layer for Git request processing.
+GitHandler helps to parse and process git requests for private git repository hosting.  
 
 ## Installation
 
