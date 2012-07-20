@@ -53,7 +53,9 @@ module GitHandler
         :write     => command[:write]
       )
 
-      log_request(request)
+      if config.log == true
+        log_request(request) 
+      end
 
       if config.raise_errors == true
         unless File.exist?(request.repo_path)

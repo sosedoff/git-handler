@@ -12,6 +12,9 @@ module GitHandler
     # @return [String] Full path to log file
     attr_reader :log_path
 
+    # @return [Boolean] Log requests
+    attr_reader :log
+
     # @return [Boolean] Raise errors for home and repository path
     attr_reader :raise_errors
 
@@ -21,6 +24,7 @@ module GitHandler
     #   :user         - Git user (git)
     #   :home_path    - Git user home path (/home/git)
     #   :repos_path   - Path to repositories (/home/git/repositories)
+    #   :log          - Log requests (true)
     #   :log_path     - Git access log path (/home/git/access.log)
     #   :raise_errors - Raise errors (true)
     #
@@ -30,11 +34,12 @@ module GitHandler
       @home_path    = options[:home_path]    || '/home/git'
       @repos_path   = options[:repos_path]   || File.join(@home_path, 'repositories')
       @log_path     = options[:log_path]     || File.join(@home_path, 'access.log')
+
+      @log = true
       @raise_errors = true
 
-      if options[:raise_errors] == false
-        @raise_errors = false
-      end
+      @log = false if options[:log] == false
+      @raise_errors = false if options[:raise_errors] == false
     end
   end
 end
