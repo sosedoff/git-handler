@@ -55,8 +55,10 @@ module GitHandler
 
       log_request(request)
 
-      unless File.exist?(request.repo_path)
-        raise SessionError, "Repository #{request.repo} does not exist!"
+      if config.raise_errors == true
+        unless File.exist?(request.repo_path)
+          raise SessionError, "Repository #{request.repo} does not exist!"
+        end
       end
 
       if block_given?
