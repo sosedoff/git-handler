@@ -22,15 +22,15 @@ module GitHandler
     #   :home_path    - Git user home path (/home/git)
     #   :repos_path   - Path to repositories (/home/git/repositories)
     #   :log_path     - Git access log path (/home/git/access.log)
-    #   :raise_errors - Raise errors (false)
+    #   :raise_errors - Raise errors (true)
     #
     # @param [Hash] options options hash
     def initialize(options={})
-      @user         = options[:user]       || 'git'
-      @home_path    = options[:home_path]  || '/home/git'
-      @repos_path   = options[:repos_path] || File.join(@home_path, 'repositories')
-      @log_path     = options[:log_path]   || File.join(@home_path, 'access.log')
-      @raise_errors = options[:raise_errors] || false
+      @user         = options[:user]         || 'git'
+      @home_path    = options[:home_path]    || '/home/git'
+      @repos_path   = options[:repos_path]   || File.join(@home_path, 'repositories')
+      @log_path     = options[:log_path]     || File.join(@home_path, 'access.log')
+      @raise_errors = options[:raise_errors] || true
     end
   end
 end

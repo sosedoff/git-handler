@@ -14,16 +14,18 @@ module GitHandler
         raise SessionError, 'Configuration required!'
       end
 
-      unless File.exists?(config.home_path)
-        raise ConfigurationError, "Home path does not exist!"
-      end
+      if config.raise_errors == true
+        unless File.exists?(config.home_path)
+          raise ConfigurationError, "Home path does not exist!"
+        end
 
-      unless File.exists?(config.repos_path)
-        raise ConfigurationError, "Repositories path does not exist!"
+        unless File.exists?(config.repos_path)
+          raise ConfigurationError, "Repositories path does not exist!"
+        end
       end
 
       @config = config
-      @log = Logger.new(@config.log_path)
+      @log    = Logger.new(@config.log_path)
     end
     
     # Execute session 
