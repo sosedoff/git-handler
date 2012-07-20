@@ -22,18 +22,27 @@ module GitHandler
       end
     end
 
+    # Check if public key contents is valid 
+    # @return [Boolean]
     def valid?
       SSHKey.valid_ssh_public_key?(@content)
     end
 
+    # Get public key MD5 checksum
+    # @return [String]
     def md5
       Digest::MD5.hexdigest(@content)
     end
 
+    # Get public key SHA1 checksum
+    # @return [String]
     def sha1
       Digest::SHA1.hexdigest(@content)
     end
 
+    # Convert public key to system key with arbitrary command
+    # @param [String] command arbitrary command
+    # @return [String]
     def to_system_key(command)
       "command=\"#{command}\",#{COMMAND_OPTIONS.join(",")} #{@content}"
     end

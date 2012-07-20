@@ -103,11 +103,13 @@ module GitHandler
     end
     
     # Check if session environment is valid
+    # @return [Boolean]
     def valid_environment?
       env['USER'] == config.user && env['HOME'] == config.home_path
     end
     
     # Check if session request is valid
+    # @return [Boolean]
     def valid_request?
       if env.include_all?(['SSH_CLIENT', 'SSH_CONNECTION', 'SSH_ORIGINAL_COMMAND'])
         if valid_command?(env['SSH_ORIGINAL_COMMAND'])

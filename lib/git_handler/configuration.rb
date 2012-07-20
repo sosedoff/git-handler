@@ -13,6 +13,7 @@ module GitHandler
     #   :repos_path - Path to repositories
     #   :log_path   - Git access log path
     #
+    # @param [Hash] options options hash
     def initialize(options={})
       @user       = options[:user]       || 'git'
       @home_path  = options[:home_path]  || '/home/git'

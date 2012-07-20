@@ -9,6 +9,7 @@ require 'git_handler/session'
 
 module GitHandler
   # Shorthand for GitHandler::Session.new
+  # @param [Configuration] config configuration instance
   # @return [Session] new session instance
   def self.new(config)
     GitHandler::Session.new(config)
