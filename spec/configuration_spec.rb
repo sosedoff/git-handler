@@ -7,17 +7,17 @@ describe GitHandler::Configuration do
     config.home_path.should eq('/home/git')
     config.repos_path.should eq('/home/git/repositories')
     config.log_path.should eq('/home/git/access.log')
-    config.raise_errors.should eq(true)
-    config.log.should eq(true)
+    config.raise_errors.should be_true
+    config.log.should be_true
   end
 
   it 'should disable error checks' do
     config = GitHandler::Configuration.new(:raise_errors => false)
-    config.raise_errors.should eq(false)
+    config.raise_errors.should be_false
   end
 
   it 'should disable logger' do
     config = GitHandler::Configuration.new(:log => false)
-    config.log.should eq(false)
+    config.log.should be_false
   end
 end

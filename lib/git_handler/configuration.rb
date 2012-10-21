@@ -1,7 +1,7 @@
 module GitHandler
   class Configuration
     DEFAULT_USER = 'git'
-    DEFAULT_PATH = '/home/git'
+    DEFAULT_HOME = '/home/git'
 
     # @return [String] Git user name
     attr_reader :user
@@ -33,8 +33,8 @@ module GitHandler
     #
     # @param [Hash] options options hash
     def initialize(options={})
-      @user         = options[:user]         || DEFAULT_PATH
-      @home_path    = options[:home_path]    || DEFAULT_USER
+      @user         = options[:user]         || DEFAULT_USER
+      @home_path    = options[:home_path]    || DEFAULT_HOME
       @repos_path   = options[:repos_path]   || File.join(@home_path, 'repositories')
       @log_path     = options[:log_path]     || File.join(@home_path, 'access.log')
 
