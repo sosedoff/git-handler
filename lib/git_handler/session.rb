@@ -127,8 +127,15 @@ module GitHandler
 
     private
 
+    # Log incoming request details
+    # @param req [Request] request instance
+    # 
+    # Example output:
+    # I, [2012-10-19T22:54:11.402583 #4212] INFO -- : 10.0.0.1 "git-upload-pack 'PATH'" arg1 arg2
+    # 
     def log_request(req)
-      log.info("Request \"#{req.command}\" from #{req.remote_ip}. Args: #{req.args.join(' ')}")
+      message = [req.remote_ip, req.command, req.args.join(' ')].join(' ')
+      log.info(message)
     end
   end
 end
